@@ -1,0 +1,57 @@
+//This code started from http://www.internetgeeks.org/tech/add-timestamp-time-stamp-google-docs-spreadsheet/
+
+function onEdit(event)
+{
+  var timezone = "GMT-5";
+  var timestamp_format = "HH:mm MM-dd-yyyy"; // Timestamp Format.
+  var updateColName = "Name";
+  var timeStampColName = "DateOfChange";
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName('Tracker'); //Name of the sheet where you want to run this script.
+ 
+  var actRng = ss.getActiveRange();
+  var editColumn = actRng.getColumn();
+  var index = actRng.getRowIndex();
+  var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues();
+  var dateCol = headers[0].indexOf(timeStampColName);
+  var updateCol = headers[0].indexOf(updateColName); updateCol = updateCol+1;
+  if (dateCol > -1 && index > 1 && editColumn == updateCol) { // only timestamp if 'Last Updated' header exists, but not in the header row itself!
+    var cell = sheet.getRange(index, dateCol + 1);
+    var date = Utilities.formatDate(new Date(), timezone, timestamp_format);
+    cell.setValue(date);
+  }
+  
+  var semesterColName = "Semester";
+  var semesterCol = headers[0].indexOf(semesterColName);
+  var editSemesterCol = actRng.getColumn();
+  var semesterIndex = actRng.getRowIndex();
+  var updateSemesterCol = headers[0].indexOf(updateColName);updateSemesterCol = updateSemesterCol+1;
+  if (semesterCol > -1 && semesterIndex > 1 && editSemesterCol == updateSemesterCol) {
+  var semesterCell = sheet.getRange(semesterIndex, semesterCol+1);
+    var semester = sheet.getRange(3,1).getValue();
+    semesterCell.setValue(semester);
+  }
+  
+  var bellColName = "Bell Schedule";
+  var bellCol = headers[0].indexOf(bellColName);
+  var editBellCol = actRng.getColumn();
+  var bellIndex = actRng.getRowIndex();
+  var updateBellCol = headers[0].indexOf(updateColName);updateBellCol = updateBellCol+1;
+  if (bellCol > -1 && bellIndex > 1 && editBellCol == updateBellCol) {
+  var bellCell = sheet.getRange(bellIndex, bellCol+1);
+    var bell = sheet.getRange(6,1).getValue();
+    bellCell.setValue(bell);
+  }
+  
+  var lunchColName = "Silent Lunch Date";
+  var lunchCol = headers[0].indexOf(lunchColName);
+  var editLunchCol = actRng.getColumn();
+  var lunchIndex = actRng.getRowIndex();
+  var updateLunchCol = headers[0].indexOf(updateColName);updateLunchCol = updateLunchCol+1;
+  if (lunchCol > -1 && lunchIndex > 1 && editLunchCol == updateLunchCol) {
+  var lunchCell = sheet.getRange(lunchIndex, lunchCol+1);
+    var lunch = sheet.getRange(9,1).getValue();
+    lunchCell.setValue(lunch);
+  }
+  
+ }
