@@ -1,15 +1,16 @@
-//This code started from http://www.internetgeeks.org/tech/add-timestamp-time-stamp-google-docs-spreadsheet/
 
 function onEdit(event)
 {
-  var timezone = "GMT-5";
-  var timestamp_format = "HH:mm MM-dd-yyyy"; // Timestamp Format.
+  var timezone = Session.getScriptTimeZone();
+  var timestamp_format = "HH:mm:ss MM-dd-yyyy"; // Timestamp Format.
   var updateColName = "Name";
   var timeStampColName = "DateOfChange";
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = ss.getSheetByName('Tracker'); //Name of the sheet where you want to run this script.
+//  var ss = SpreadsheetApp.getActiveSpreadsheet();
+//  var sheet = ss.getSheetByName('Tracker'); //Name of the sheet where you want to run this script.
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet()
  
-  var actRng = ss.getActiveRange();
+//  var actRng = ss.getActiveRange();
+  var actRng = sheet.getActiveRange();
   var editColumn = actRng.getColumn();
   var index = actRng.getRowIndex();
   var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues();
@@ -54,4 +55,28 @@ function onEdit(event)
     lunchCell.setValue(lunch);
   }
   
+  var timeColName = "Time";
+  var timeCol = headers[0].indexOf(timeColName);
+  var editTimeCol = actRng.getColumn();
+  var timeIndex = actRng.getRowIndex();
+  var updateTimeCol = headers[0].indexOf(updateColName);updateTimeCol = updateTimeCol+1;
+  if (timeCol > -1 && timeIndex > 1 && editTimeCol == updateTimeCol) {
+  var timeCell = sheet.getRange(timeIndex, timeCol+1);
+    var time = Utilities.formatDate(new Date(), timezone, "HH:mm");
+    timeCell.setValue(time);
+  }
+  
+  var dateColName = "Date";
+  var dateCol = headers[0].indexOf(dateColName);
+  var editDateCol = actRng.getColumn();
+  var dateIndex = actRng.getRowIndex();
+  var updateDateCol = headers[0].indexOf(updateColName);updateDateCol = updateDateCol+1;
+  if (dateCol > -1 && dateIndex > 1 && editDateCol == updateDateCol) {
+  var dateCell = sheet.getRange(dateIndex, dateCol+1);
+    var date2 = Utilities.formatDate(new Date(), timezone, "MM-dd-yyyy");
+    dateCell.setValue(date2);
+  }
+  
  }
+
+//Read more: How to Auto Insert Timestamp in Google Sheet » Technology Geeks 
